@@ -1,0 +1,4 @@
+Row:2 	 Error:Error: ORA-01400: cannot insert NULL into ("STRAP"."EVENTS_T"."EVENT_ID")
+Row:3 	 Error:Error: ORA-01400: cannot insert NULL into ("STRAP"."EVENTS_T"."EVENT_ID")
+Row:4 	 Error:Error: ORA-01400: cannot insert NULL into ("STRAP"."EVENTS_T"."EVENT_ID")
+Row:5 	 Error:Error: ORA-01400: cannot insert NULL into ("STRAP"."EVENTS_T"."EVENT_ID")

@@ -1,0 +1,1 @@
+Row:162 	 Error:Error: ORA-12899: value too large for column "STRAP"."SERIAL_T"."PART_NO" (actual: 4294967295, maximum: 20)

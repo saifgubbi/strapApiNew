@@ -1,0 +1,8 @@
+Row:2 	 Error:Error: ORA-01400: cannot insert NULL into ("STRAP"."SCHED_TBL"."PART_NO")
+Row:3 	 Error:Error: ORA-01400: cannot insert NULL into ("STRAP"."SCHED_TBL"."PART_NO")
+Row:4 	 Error:Error: ORA-01400: cannot insert NULL into ("STRAP"."SCHED_TBL"."PART_NO")
+Row:5 	 Error:Error: ORA-01400: cannot insert NULL into ("STRAP"."SCHED_TBL"."PART_NO")
+Row:6 	 Error:Error: ORA-01400: cannot insert NULL into ("STRAP"."SCHED_TBL"."PART_NO")
+Row:7 	 Error:Error: ORA-01400: cannot insert NULL into ("STRAP"."SCHED_TBL"."PART_NO")
+Row:8 	 Error:Error: ORA-01400: cannot insert NULL into ("STRAP"."SCHED_TBL"."PART_NO")
+Row:9 	 Error:Error: ORA-01400: cannot insert NULL into ("STRAP"."SCHED_TBL"."PART_NO")

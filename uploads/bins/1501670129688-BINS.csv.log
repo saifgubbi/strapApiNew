@@ -1,0 +1,180 @@
+Row:2 	 Error:Error: ORA-06592: CASE not found while executing CASE statement
+ORA-06512: at "STRAP.RECIEVE", line 19
+ORA-06512: at "STRAP.EVENTS_AFTER_INSERT", line 8
+ORA-04088: error during execution of trigger 'STRAP.EVENTS_AFTER_INSERT'
+ORA-06512: at "STRAP.INVOICE_BINS_AFTER_INSERT", line 4
+ORA-04088: error during execution of trigger 'STRAP.INVOICE_BINS_AFTER_INSERT'
+Row:3 	 Error:Error: ORA-06592: CASE not found while executing CASE statement
+ORA-06512: at "STRAP.RECIEVE", line 19
+ORA-06512: at "STRAP.EVENTS_AFTER_INSERT", line 8
+ORA-04088: error during execution of trigger 'STRAP.EVENTS_AFTER_INSERT'
+ORA-06512: at "STRAP.INVOICE_BINS_AFTER_INSERT", line 4
+ORA-04088: error during execution of trigger 'STRAP.INVOICE_BINS_AFTER_INSERT'
+Row:4 	 Error:Error: ORA-06592: CASE not found while executing CASE statement
+ORA-06512: at "STRAP.RECIEVE", line 19
+ORA-06512: at "STRAP.EVENTS_AFTER_INSERT", line 8
+ORA-04088: error during execution of trigger 'STRAP.EVENTS_AFTER_INSERT'
+ORA-06512: at "STRAP.INVOICE_BINS_AFTER_INSERT", line 4
+ORA-04088: error during execution of trigger 'STRAP.INVOICE_BINS_AFTER_INSERT'
+Row:5 	 Error:Error: ORA-06592: CASE not found while executing CASE statement
+ORA-06512: at "STRAP.RECIEVE", line 19
+ORA-06512: at "STRAP.EVENTS_AFTER_INSERT", line 8
+ORA-04088: error during execution of trigger 'STRAP.EVENTS_AFTER_INSERT'
+ORA-06512: at "STRAP.INVOICE_BINS_AFTER_INSERT", line 4
+ORA-04088: error during execution of trigger 'STRAP.INVOICE_BINS_AFTER_INSERT'
+Row:6 	 Error:Error: ORA-06592: CASE not found while executing CASE statement
+ORA-06512: at "STRAP.RECIEVE", line 19
+ORA-06512: at "STRAP.EVENTS_AFTER_INSERT", line 8
+ORA-04088: error during execution of trigger 'STRAP.EVENTS_AFTER_INSERT'
+ORA-06512: at "STRAP.INVOICE_BINS_AFTER_INSERT", line 4
+ORA-04088: error during execution of trigger 'STRAP.INVOICE_BINS_AFTER_INSERT'
+Row:7 	 Error:Error: ORA-06592: CASE not found while executing CASE statement
+ORA-06512: at "STRAP.RECIEVE", line 19
+ORA-06512: at "STRAP.EVENTS_AFTER_INSERT", line 8
+ORA-04088: error during execution of trigger 'STRAP.EVENTS_AFTER_INSERT'
+ORA-06512: at "STRAP.INVOICE_BINS_AFTER_INSERT", line 4
+ORA-04088: error during execution of trigger 'STRAP.INVOICE_BINS_AFTER_INSERT'
+Row:8 	 Error:Error: ORA-06592: CASE not found while executing CASE statement
+ORA-06512: at "STRAP.RECIEVE", line 19
+ORA-06512: at "STRAP.EVENTS_AFTER_INSERT", line 8
+ORA-04088: error during execution of trigger 'STRAP.EVENTS_AFTER_INSERT'
+ORA-06512: at "STRAP.INVOICE_BINS_AFTER_INSERT", line 4
+ORA-04088: error during execution of trigger 'STRAP.INVOICE_BINS_AFTER_INSERT'
+Row:9 	 Error:Error: ORA-06592: CASE not found while executing CASE statement
+ORA-06512: at "STRAP.RECIEVE", line 19
+ORA-06512: at "STRAP.EVENTS_AFTER_INSERT", line 8
+ORA-04088: error during execution of trigger 'STRAP.EVENTS_AFTER_INSERT'
+ORA-06512: at "STRAP.INVOICE_BINS_AFTER_INSERT", line 4
+ORA-04088: error during execution of trigger 'STRAP.INVOICE_BINS_AFTER_INSERT'
+Row:10 	 Error:Error: ORA-06592: CASE not found while executing CASE statement
+ORA-06512: at "STRAP.RECIEVE", line 19
+ORA-06512: at "STRAP.EVENTS_AFTER_INSERT", line 8
+ORA-04088: error during execution of trigger 'STRAP.EVENTS_AFTER_INSERT'
+ORA-06512: at "STRAP.INVOICE_BINS_AFTER_INSERT", line 4
+ORA-04088: error during execution of trigger 'STRAP.INVOICE_BINS_AFTER_INSERT'
+Row:11 	 Error:Error: ORA-06592: CASE not found while executing CASE statement
+ORA-06512: at "STRAP.RECIEVE", line 19
+ORA-06512: at "STRAP.EVENTS_AFTER_INSERT", line 8
+ORA-04088: error during execution of trigger 'STRAP.EVENTS_AFTER_INSERT'
+ORA-06512: at "STRAP.INVOICE_BINS_AFTER_INSERT", line 4
+ORA-04088: error during execution of trigger 'STRAP.INVOICE_BINS_AFTER_INSERT'
+Row:12 	 Error:Error: ORA-06592: CASE not found while executing CASE statement
+ORA-06512: at "STRAP.RECIEVE", line 19
+ORA-06512: at "STRAP.EVENTS_AFTER_INSERT", line 8
+ORA-04088: error during execution of trigger 'STRAP.EVENTS_AFTER_INSERT'
+ORA-06512: at "STRAP.INVOICE_BINS_AFTER_INSERT", line 4
+ORA-04088: error during execution of trigger 'STRAP.INVOICE_BINS_AFTER_INSERT'
+Row:13 	 Error:Error: ORA-06592: CASE not found while executing CASE statement
+ORA-06512: at "STRAP.RECIEVE", line 19
+ORA-06512: at "STRAP.EVENTS_AFTER_INSERT", line 8
+ORA-04088: error during execution of trigger 'STRAP.EVENTS_AFTER_INSERT'
+ORA-06512: at "STRAP.INVOICE_BINS_AFTER_INSERT", line 4
+ORA-04088: error during execution of trigger 'STRAP.INVOICE_BINS_AFTER_INSERT'
+Row:14 	 Error:Error: ORA-06592: CASE not found while executing CASE statement
+ORA-06512: at "STRAP.RECIEVE", line 19
+ORA-06512: at "STRAP.EVENTS_AFTER_INSERT", line 8
+ORA-04088: error during execution of trigger 'STRAP.EVENTS_AFTER_INSERT'
+ORA-06512: at "STRAP.INVOICE_BINS_AFTER_INSERT", line 4
+ORA-04088: error during execution of trigger 'STRAP.INVOICE_BINS_AFTER_INSERT'
+Row:15 	 Error:Error: ORA-06592: CASE not found while executing CASE statement
+ORA-06512: at "STRAP.RECIEVE", line 19
+ORA-06512: at "STRAP.EVENTS_AFTER_INSERT", line 8
+ORA-04088: error during execution of trigger 'STRAP.EVENTS_AFTER_INSERT'
+ORA-06512: at "STRAP.INVOICE_BINS_AFTER_INSERT", line 4
+ORA-04088: error during execution of trigger 'STRAP.INVOICE_BINS_AFTER_INSERT'
+Row:16 	 Error:Error: ORA-06592: CASE not found while executing CASE statement
+ORA-06512: at "STRAP.RECIEVE", line 19
+ORA-06512: at "STRAP.EVENTS_AFTER_INSERT", line 8
+ORA-04088: error during execution of trigger 'STRAP.EVENTS_AFTER_INSERT'
+ORA-06512: at "STRAP.INVOICE_BINS_AFTER_INSERT", line 4
+ORA-04088: error during execution of trigger 'STRAP.INVOICE_BINS_AFTER_INSERT'
+Row:17 	 Error:Error: ORA-06592: CASE not found while executing CASE statement
+ORA-06512: at "STRAP.RECIEVE", line 19
+ORA-06512: at "STRAP.EVENTS_AFTER_INSERT", line 8
+ORA-04088: error during execution of trigger 'STRAP.EVENTS_AFTER_INSERT'
+ORA-06512: at "STRAP.INVOICE_BINS_AFTER_INSERT", line 4
+ORA-04088: error during execution of trigger 'STRAP.INVOICE_BINS_AFTER_INSERT'
+Row:18 	 Error:Error: ORA-06592: CASE not found while executing CASE statement
+ORA-06512: at "STRAP.RECIEVE", line 19
+ORA-06512: at "STRAP.EVENTS_AFTER_INSERT", line 8
+ORA-04088: error during execution of trigger 'STRAP.EVENTS_AFTER_INSERT'
+ORA-06512: at "STRAP.INVOICE_BINS_AFTER_INSERT", line 4
+ORA-04088: error during execution of trigger 'STRAP.INVOICE_BINS_AFTER_INSERT'
+Row:19 	 Error:Error: ORA-06592: CASE not found while executing CASE statement
+ORA-06512: at "STRAP.RECIEVE", line 19
+ORA-06512: at "STRAP.EVENTS_AFTER_INSERT", line 8
+ORA-04088: error during execution of trigger 'STRAP.EVENTS_AFTER_INSERT'
+ORA-06512: at "STRAP.INVOICE_BINS_AFTER_INSERT", line 4
+ORA-04088: error during execution of trigger 'STRAP.INVOICE_BINS_AFTER_INSERT'
+Row:20 	 Error:Error: ORA-06592: CASE not found while executing CASE statement
+ORA-06512: at "STRAP.RECIEVE", line 19
+ORA-06512: at "STRAP.EVENTS_AFTER_INSERT", line 8
+ORA-04088: error during execution of trigger 'STRAP.EVENTS_AFTER_INSERT'
+ORA-06512: at "STRAP.INVOICE_BINS_AFTER_INSERT", line 4
+ORA-04088: error during execution of trigger 'STRAP.INVOICE_BINS_AFTER_INSERT'
+Row:21 	 Error:Error: ORA-06592: CASE not found while executing CASE statement
+ORA-06512: at "STRAP.RECIEVE", line 19
+ORA-06512: at "STRAP.EVENTS_AFTER_INSERT", line 8
+ORA-04088: error during execution of trigger 'STRAP.EVENTS_AFTER_INSERT'
+ORA-06512: at "STRAP.INVOICE_BINS_AFTER_INSERT", line 4
+ORA-04088: error during execution of trigger 'STRAP.INVOICE_BINS_AFTER_INSERT'
+Row:22 	 Error:Error: ORA-06592: CASE not found while executing CASE statement
+ORA-06512: at "STRAP.RECIEVE", line 19
+ORA-06512: at "STRAP.EVENTS_AFTER_INSERT", line 8
+ORA-04088: error during execution of trigger 'STRAP.EVENTS_AFTER_INSERT'
+ORA-06512: at "STRAP.INVOICE_BINS_AFTER_INSERT", line 4
+ORA-04088: error during execution of trigger 'STRAP.INVOICE_BINS_AFTER_INSERT'
+Row:23 	 Error:Error: ORA-06592: CASE not found while executing CASE statement
+ORA-06512: at "STRAP.RECIEVE", line 19
+ORA-06512: at "STRAP.EVENTS_AFTER_INSERT", line 8
+ORA-04088: error during execution of trigger 'STRAP.EVENTS_AFTER_INSERT'
+ORA-06512: at "STRAP.INVOICE_BINS_AFTER_INSERT", line 4
+ORA-04088: error during execution of trigger 'STRAP.INVOICE_BINS_AFTER_INSERT'
+Row:24 	 Error:Error: ORA-06592: CASE not found while executing CASE statement
+ORA-06512: at "STRAP.RECIEVE", line 19
+ORA-06512: at "STRAP.EVENTS_AFTER_INSERT", line 8
+ORA-04088: error during execution of trigger 'STRAP.EVENTS_AFTER_INSERT'
+ORA-06512: at "STRAP.INVOICE_BINS_AFTER_INSERT", line 4
+ORA-04088: error during execution of trigger 'STRAP.INVOICE_BINS_AFTER_INSERT'
+Row:25 	 Error:Error: ORA-06592: CASE not found while executing CASE statement
+ORA-06512: at "STRAP.RECIEVE", line 19
+ORA-06512: at "STRAP.EVENTS_AFTER_INSERT", line 8
+ORA-04088: error during execution of trigger 'STRAP.EVENTS_AFTER_INSERT'
+ORA-06512: at "STRAP.INVOICE_BINS_AFTER_INSERT", line 4
+ORA-04088: error during execution of trigger 'STRAP.INVOICE_BINS_AFTER_INSERT'
+Row:26 	 Error:Error: ORA-06592: CASE not found while executing CASE statement
+ORA-06512: at "STRAP.RECIEVE", line 19
+ORA-06512: at "STRAP.EVENTS_AFTER_INSERT", line 8
+ORA-04088: error during execution of trigger 'STRAP.EVENTS_AFTER_INSERT'
+ORA-06512: at "STRAP.INVOICE_BINS_AFTER_INSERT", line 4
+ORA-04088: error during execution of trigger 'STRAP.INVOICE_BINS_AFTER_INSERT'
+Row:27 	 Error:Error: ORA-06592: CASE not found while executing CASE statement
+ORA-06512: at "STRAP.RECIEVE", line 19
+ORA-06512: at "STRAP.EVENTS_AFTER_INSERT", line 8
+ORA-04088: error during execution of trigger 'STRAP.EVENTS_AFTER_INSERT'
+ORA-06512: at "STRAP.INVOICE_BINS_AFTER_INSERT", line 4
+ORA-04088: error during execution of trigger 'STRAP.INVOICE_BINS_AFTER_INSERT'
+Row:28 	 Error:Error: ORA-06592: CASE not found while executing CASE statement
+ORA-06512: at "STRAP.RECIEVE", line 19
+ORA-06512: at "STRAP.EVENTS_AFTER_INSERT", line 8
+ORA-04088: error during execution of trigger 'STRAP.EVENTS_AFTER_INSERT'
+ORA-06512: at "STRAP.INVOICE_BINS_AFTER_INSERT", line 4
+ORA-04088: error during execution of trigger 'STRAP.INVOICE_BINS_AFTER_INSERT'
+Row:29 	 Error:Error: ORA-06592: CASE not found while executing CASE statement
+ORA-06512: at "STRAP.RECIEVE", line 19
+ORA-06512: at "STRAP.EVENTS_AFTER_INSERT", line 8
+ORA-04088: error during execution of trigger 'STRAP.EVENTS_AFTER_INSERT'
+ORA-06512: at "STRAP.INVOICE_BINS_AFTER_INSERT", line 4
+ORA-04088: error during execution of trigger 'STRAP.INVOICE_BINS_AFTER_INSERT'
+Row:30 	 Error:Error: ORA-06592: CASE not found while executing CASE statement
+ORA-06512: at "STRAP.RECIEVE", line 19
+ORA-06512: at "STRAP.EVENTS_AFTER_INSERT", line 8
+ORA-04088: error during execution of trigger 'STRAP.EVENTS_AFTER_INSERT'
+ORA-06512: at "STRAP.INVOICE_BINS_AFTER_INSERT", line 4
+ORA-04088: error during execution of trigger 'STRAP.INVOICE_BINS_AFTER_INSERT'
+Row:31 	 Error:Error: ORA-06592: CASE not found while executing CASE statement
+ORA-06512: at "STRAP.RECIEVE", line 19
+ORA-06512: at "STRAP.EVENTS_AFTER_INSERT", line 8
+ORA-04088: error during execution of trigger 'STRAP.EVENTS_AFTER_INSERT'
+ORA-06512: at "STRAP.INVOICE_BINS_AFTER_INSERT", line 4
+ORA-04088: error during execution of trigger 'STRAP.INVOICE_BINS_AFTER_INSERT'

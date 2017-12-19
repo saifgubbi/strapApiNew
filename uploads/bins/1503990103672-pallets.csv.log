@@ -1,0 +1,3 @@
+Row:3 	 Error:Error: ORA-00001: unique constraint (STRAP.PK_PALLETS) violated
+Row:4 	 Error:Error: ORA-00001: unique constraint (STRAP.PK_PALLETS) violated
+Row:5 	 Error:Error: ORA-01400: cannot insert NULL into ("STRAP"."PALLETS_T"."PALLET_ID")

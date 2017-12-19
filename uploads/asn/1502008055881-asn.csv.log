@@ -1,0 +1,10 @@
+Row:2 	 Error:Error: ORA-20001: No data available for this customer part number
+ORA-06512: at "STRAP.ASN_BEFORE_INSERT", line 13
+ORA-04088: error during execution of trigger 'STRAP.ASN_BEFORE_INSERT'
+Row:3 	 Error:Error: ORA-00001: unique constraint (STRAP.ASN_TBL_PK) violated
+Row:4 	 Error:Error: ORA-00001: unique constraint (STRAP.ASN_TBL_PK) violated
+Row:5 	 Error:Error: ORA-00001: unique constraint (STRAP.ASN_TBL_PK) violated
+Row:6 	 Error:Error: ORA-00001: unique constraint (STRAP.ASN_TBL_PK) violated
+Row:7 	 Error:Error: ORA-00001: unique constraint (STRAP.ASN_TBL_PK) violated
+Row:8 	 Error:Error: ORA-00001: unique constraint (STRAP.ASN_TBL_PK) violated
+Row:9 	 Error:Error: ORA-00001: unique constraint (STRAP.ASN_TBL_PK) violated

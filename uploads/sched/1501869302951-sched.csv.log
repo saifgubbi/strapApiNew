@@ -1,0 +1,5 @@
+Row:4 	 Error:Error: ORA-00001: unique constraint (STRAP.SCHED_TBL_PK) violated
+Row:5 	 Error:Error: ORA-00001: unique constraint (STRAP.SCHED_TBL_PK) violated
+Row:6 	 Error:Error: ORA-00001: unique constraint (STRAP.SCHED_TBL_PK) violated
+Row:8 	 Error:Error: ORA-00001: unique constraint (STRAP.SCHED_TBL_PK) violated
+Row:9 	 Error:Error: ORA-00001: unique constraint (STRAP.SCHED_TBL_PK) violated

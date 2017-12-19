@@ -1,0 +1,1 @@
+Row:2 	 Error:Error: ORA-01400: cannot insert NULL into ("STRAP"."PARTS_T"."PART_NO")

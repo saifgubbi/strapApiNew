@@ -1,0 +1,3 @@
+Row:2 	 Error:Error: ORA-20001: No data available for this customer part number
+ORA-06512: at "STRAP.ASN_BEFORE_INSERT", line 13
+ORA-04088: error during execution of trigger 'STRAP.ASN_BEFORE_INSERT'

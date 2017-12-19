@@ -1,0 +1,3 @@
+Row:2 	 Error:Error: ORA-12899: value too large for column "STRAP"."BINS_T"."BIN_ID" (actual: 19, maximum: 16)
+Row:3 	 Error:Error: ORA-12899: value too large for column "STRAP"."BINS_T"."BIN_ID" (actual: 19, maximum: 16)
+Row:4 	 Error:Error: ORA-12899: value too large for column "STRAP"."BINS_T"."BIN_ID" (actual: 19, maximum: 16)

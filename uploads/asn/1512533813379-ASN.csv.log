@@ -1,0 +1,3 @@
+Row:2 	 Error:Error: ORA-20001: Error ! When Updating :ORA-01400: cannot insert NULL into ("STRAP"."ASN_T"."ASN_DATE")
+ORA-06512: at "STRAP.AFTER_EVENTS_TRIG", line 1091
+ORA-04088: error during execution of trigger 'STRAP.AFTER_EVENTS_TRIG'
