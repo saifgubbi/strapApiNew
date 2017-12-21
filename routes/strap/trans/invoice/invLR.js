@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var op = require('../../../../oracleDBOps');
 var async=require('async');
+var moment = require('moment');
 
 router.put('/', function (req, res) {
     updateLR(req, res);
@@ -143,13 +144,18 @@ function  getInvList(req, res) {
     var status = (req.query.status || '%') + '%';
     var partNo = (req.query.partNo || '%') + '%';
     var partGrp = req.query.partGrp;
-
+    var invDt = '';
     var lr = '';
+    
+    if (req.query.invDtFrom && req.query.invDtTo) {
+        invDt = `AND TRUNC(A.INV_DT) = '${moment(req.query.invDt).format("DD-MMM-YYYY")}'`;
+    }
+    
     if (req.query.lr) {
         lr = ` AND LR LIKE '${req.query.lr}%' `;
     }
     var sqlStatement = `SELECT * FROM INV_HDR_T A,INV_LINE_T B  WHERE A.INVOICE_NUM LIKE '${invId}' AND A.FROM_LOC LIKE '${fromLoc}' AND A.TO_LOC LIKE '${toLoc}' AND A.STATUS LIKE '${status}' AND                         
-                        A.INVOICE_NUM=B.INVOICE_NUM AND A.INV_DT=B.INV_DT AND B.PART_NO LIKE '${partNo}' AND A.PART_GRP = '${partGrp}'  ${lr}`;
+                        A.INVOICE_NUM=B.INVOICE_NUM AND A.INV_DT=B.INV_DT AND B.PART_NO LIKE '${partNo}' AND A.PART_GRP = '${partGrp}'  ${lr} ${invDt}`;
     var bindVars = [];
     //console.log(sqlStatement);
     op.singleSQL(sqlStatement, bindVars, req, res);

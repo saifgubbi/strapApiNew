@@ -9,6 +9,10 @@ router.get('/', function (req, res) {
     getParts(req, res);
 });
 
+router.get('/list', function (req, res) {
+    getPartsLoc(req, res);
+});
+
 
 module.exports = router;
 
@@ -62,3 +66,33 @@ function getParts(req, res) {
     op.singleSQL(sqlStatement, bindVars, req, res);
 }
 
+function getPartsLoc(req, res) {
+
+    var partGrp = req.query.partGrp;  
+    var locType = '';
+    if (req.query.locType==='plant') {
+        locType = ` AND l.type='Plant' and b.status NOT IN ('New','Dispatched','Reached') AND b.status <>l.close_status `;
+    }
+    else if (req.query.locType==='transit')
+    {
+        locType = ` AND l.type IN ('Plant','Warehouse') and b.status IN ('Dispatched','Reached') AND b.status <>l.close_status `;
+    }
+    else if (req.query.locType==='warehouse')
+    {
+        locType = ` AND l.type='Warehouse' and b.status NOT IN ('New','Dispatched','Reached') AND b.status <>l.close_status `;
+    }
+    else
+    {
+        locType='';
+    }
+    var sqlStatement = `SELECT b.part_no, sum(qty) qty
+                                   from bins_t b,LOCATIONS_T l 
+                                  where b.from_loc=l.loc_id 
+                                    and b.part_no is not null
+                                    and b.part_grp like '${partGrp}' ${locType}
+                                    and b.qty <>0
+                                    group by part_no`;
+    var bindVars = [];
+    console.log(sqlStatement);
+    op.singleSQL(sqlStatement, bindVars, req, res);
+}

@@ -5,7 +5,6 @@ var async = require('async');
 
 router.post('/', function (req, res) {
     release(req, res);
-
 });
 
 router.get('/getQty', function (req, res) {

@@ -188,7 +188,6 @@ function getPick(req, res) {
 
     function getBins(conn, cb) {
         var sqlStatement;
-       // sqlStatement = `SELECT BIN_ID AS "id" ,LABEL as "label", QTY as "qty" FROM BINS_T WHERE PICK_LIST = '${pickList}' AND PART_GRP='${partGrp}' GROUP BY BIN_ID,LABEL,QTY order by bin_id`;
         sqlStatement = `SELECT BIN_ID AS "id" , QTY as "qty" FROM BINS_T WHERE PICK_LIST = '${pickList}' AND PART_GRP='${partGrp}' GROUP BY BIN_ID,QTY order by bin_id`;
      
         // console.log(sqlStatement);
@@ -245,7 +244,8 @@ function getId(req, res) {
 function getInvPicklist(req, res) {
     var invId = req.query.invId;
     var partGrp = req.query.partGrp;
-    var sqlStatement = `SELECT COUNT(1) as "bins",PART_NO as "partNo",PICK_LIST as "pickList",SUM(QTY) as "qty" FROM BINS_T WHERE PART_GRP='${partGrp}' AND INVOICE_NUM='${invId}' GROUP BY PICK_LIST,PART_NO ORDER BY PART_NO`;
+    var sqlStatement = `SELECT COUNT(1) as "bins",PART_NO as "partNo",REF_LABEL as "pickList",SUM(QTY) as "qty" FROM EVENTS_T  WHERE PART_GRP='${partGrp}' AND INVOICE_NUM='${invId}' 
+                        AND EVENT_TYPE='Bin' AND EVENT_NAME='Invoiced' GROUP BY REF_LABEL,PART_NO ORDER BY PART_NO`;
     var bindVars = [];
     op.singleSQL(sqlStatement, bindVars, req, res);
 }

@@ -88,7 +88,7 @@ function getPallet(req, res) {
                             UNION
                              SELECT count(1) as palletCount FROM PALLETS_LBL_T WHERE LABEL ='${palletLbl}' AND PART_GRP='${partGrp}')`;
             let bindVars = [];
-            console.log(sqlStatement);
+            //console.log(sqlStatement);
             conn.execute(sqlStatement
                     , bindVars, {
                         outFormat: oracledb.OBJECT
@@ -99,12 +99,12 @@ function getPallet(req, res) {
                 } else {
                     if (result.rows[0].palletCount === 0) {
                         palletLblFound = true;
-                        console.log('Pallet Not Found');
+                       // console.log('Pallet Not Found');
                         cb(null, conn);
                     } else {
                         //Added for response set
                         res.status(200).send({'message': 'Pallet Lbl Already Exist','status':'false'});
-                        console.log('Pallet Found');
+                      //  console.log('Pallet Found');
                         cb(null, conn);
                     }
                 }
@@ -116,7 +116,7 @@ function getPallet(req, res) {
                             UNION
                              SELECT count(1) as palletCount FROM PALLETS_LBL_T WHERE LABEL ='${palletLbl}' AND PART_GRP='${partGrp}')`;
             let bindVars = [];
-            console.log(sqlStatement);
+            //console.log(sqlStatement);
             conn.execute(sqlStatement
                     , bindVars, {
                         outFormat: oracledb.OBJECT
@@ -127,11 +127,11 @@ function getPallet(req, res) {
                 } else {
                     if (result.rows[0].palletCount === 0) {
                         palletLblFound = true;//Added for response set
-                        console.log('Pallet Not Found');
+                       // console.log('Pallet Not Found');
                         cb(null, conn);
                     } else {                        
                         res.status(200).send({'message': 'Pallet Lbl Exists Already','status':'false'});
-                        console.log('Pallet Found');
+                        //console.log('Pallet Found');
                         cb(null, conn);
                     }
                 }
@@ -193,14 +193,14 @@ function getPallet(req, res) {
                 if (err) {
                     cb(err, conn);
                 } else {
-                    console.log(sqlStatement);
+                    //console.log(sqlStatement);
                     if (result.rows[0].palletCount === 0) {
                         res.status(200).send({'message': 'Pallet is not in Ready or Palletised Status','status':'false'});
                         cb(null, conn);
 
                     } else {
                         palletStatus = true;
-                        console.log('Pallet in Ready or Palletised Status');
+                        //console.log('Pallet in Ready or Palletised Status');
                         cb(null, conn);
                     }
                 }
@@ -225,7 +225,7 @@ function getPallet(req, res) {
                 if (err) {
                     cb(err, conn);
                 } else {
-                    console.log(sqlStatement);
+                    //console.log(sqlStatement);
                     if (result.rows[0].palletCount === 0) {
                         palletLblFound1 = true;//Added for response set
                         cb(null, conn);
@@ -258,7 +258,7 @@ function getPallet(req, res) {
                 if (err) {
                     cb(err, conn);
                 } else {
-                    console.log(sqlStatement);
+                    //console.log(sqlStatement);
                     if (result.rows[0].palletCount === 0) {
                         res.status(200).send({'message': 'Create Pallet','status':'true'});
                         cb(null, conn);
@@ -408,7 +408,8 @@ function getBins(req, res) {
         // console.log(req.query.id);
         binId = req.query.id;
         partGrp = req.query.partGrp;
-        let sqlStatement = `SELECT count(1) as "binsCount" FROM BINS_T WHERE BIN_ID='${binId}' AND STATUS='Ready' AND QTY =0 AND PART_GRP='${partGrp}'`;
+        locId = req.query.locId;
+        let sqlStatement = `SELECT count(1) as "binsCount" FROM BINS_T WHERE BIN_ID='${binId}' AND STATUS='Ready' AND QTY =0 AND PART_GRP='${partGrp}' AND FROM_LOC='${locId}'`;
         let bindVars = [];
         //  console.log(sqlStatement);
         conn.execute(sqlStatement
@@ -445,13 +446,110 @@ function getBins(req, res) {
                 if (conn)
                     dorelease(conn);
             });
-}
-;
+};
+
+//function palletize1(req, res) {
+//    var palletId = req.body.id;
+//    var palletLbl = req.body.label;
+//    var palletType = req.body.type;
+//    var palletStatus = req.body.status;
+//    var palletPart = req.body.partNo;
+//    var palletQty = req.body.qty;
+//    var userId = req.body.userId;
+//    var locId = req.body.locId;
+//    var partGrp = req.body.partGrp;
+//    var comments = req.body.isReturnable;
+//    var ts = new Date().getTime();
+//    var bindArr = [];
+//    
+//    if (palletStatus==='Palletised')
+//    {  
+//        let sqlStatement = "INSERT INTO EVENTS_T VALUES (:1,:2,:3,:4,:5,:6,:7,:8,:9,:10,:11,:12,:13,:14,:15,:16,:17,:18,:19,:20)";
+//    
+//        let bindVars = [palletId, palletType, palletStatus, new Date(), locId, '', palletLbl, palletPart, palletQty, null, userId, comments, 0, ts, palletId, palletLbl, partGrp, null, null, null];
+//
+//        bindArr.push(bindVars);
+//
+//        req.body.objArray.forEach(function (obj) {
+//            let binVars = [obj.objId, 'Bin', palletStatus, new Date(), locId, '', obj.objLbl, obj.objPart, obj.objQty, null, userId, null, 0, ts, palletId, palletLbl, partGrp, null, null];
+//            bindArr.push(binVars);
+//        });
+//    }
+//    else
+//    {
+//        function getDePalletise(req, res) {
+//            var request = require('request');
+//            var dataArr = {obj:[]};
+//            let devArr = [];
+//
+//            var doConnect = function (cb) {
+//                op.doConnectCB(function (err, conn) {
+//                    if (err)
+//                        throw err;
+//                    cb(null, conn);
+//                });
+//            };
+//            
+//            let sqlStatement = "INSERT INTO EVENTS_T VALUES (:1,:2,:3,:4,:5,:6,:7,:8,:9,:10,:11,:12,:13,:14,:15,:16,:17,:18,:19,:20)";
+//            function getPallet(conn, cb) {
+//                    request('api/strap/palletizeList?&id='+palletId+'&label='+palletLbl, function (err, response, result) {
+//                       if (err) {
+//                            callback();
+//                        } else {
+//                            try {
+//                                let apiResp = JSON.parse(result);
+//                                dataArr.push(apiResp);
+//                            } catch (err) {
+//                                console.log(err);
+//                            }
+//                            callback();
+//                        }
+//                    });               
+//                } 
+//            function getBins(conn, cb) {
+//                    request('api/strap/palletizeList/detail?&id='+palletId+'&label='+palletLbl+'&partGrp='+partGrp, function (err, response, result) {
+//                       if (err) {
+//                            callback();
+//                        } else {
+//                            try {
+//                                let apiResp = JSON.parse(result);
+//                                dataArr.obj.push(apiResp);
+//                            } catch (err) {
+//                                console.log(err);
+//                            }
+//                            callback();
+//                        }
+//                    });               
+//                }    
+//           
+//    async.waterfall(
+//            [doConnect,
+//                getPallet,
+//                getBins
+//            ],
+//            function (err, conn) {
+//                if (err) {
+//                    console.error("In waterfall error cb: ==>", err, "<==");
+//                    res.status(500).json({message: err});
+//                }
+//                console.log("Done Waterfall");
+//                if (conn)
+//                    conn.close();
+//            });
+//
+//       }
+//        
+//    }
+//    
+//    }
+//    //insertEvents(req, res, sqlStatement, bindArr);
+////}
 
 function palletize(req, res) {
     let palletId = req.body.id;
     let palletLbl = req.body.label;
     let palletType = req.body.type;
+    let palletStatus = req.body.status;
     let palletPart = req.body.partNo;
     let palletQty = req.body.qty;
     let userId = req.body.userId;
@@ -463,7 +561,7 @@ function palletize(req, res) {
     let bindArr = [];
 
     /*Insert Pallet SQL*/
-
+        
     let sqlStatement = "INSERT INTO EVENTS_T VALUES (:1,:2,:3,:4,:5,:6,:7,:8,:9,:10,:11,:12,:13,:14,:15,:16,:17,:18,:19,:20) ";
     let bindVars = [palletId, palletType, 'Palletised', new Date(), locId, '', palletLbl, palletPart, palletQty, null, userId, comments, 0, ts, palletId, palletLbl, partGrp, null, null, null];
 
@@ -488,14 +586,11 @@ function insertEvents(req, res, sqlStatement, bindArr) {
     };
 
     function doInsert(conn, cb) {
-        //console.log("In  doInsert");
         let arrayCount = 1;
         async.eachSeries(bindArr, function (data, callback) {
             arrayCount++;
-            //console.log("Inserting :", JSON.stringify(data));
             let insertStatement = sqlStatement;
             let bindVars = data;
-            //  console.log(bindVars.join());
             conn.execute(insertStatement
                     , bindVars, {
                         autoCommit: true// Override the default non-autocommit behavior
