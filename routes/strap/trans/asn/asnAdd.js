@@ -2,11 +2,15 @@ var express = require('express');
 var router = express.Router();
 var op = require('../../../../oracleDBOps');
 var async = require('async');
+var oracledb = require('oracledb');
 
 router.post('/', function (req, res) {
-    addInvoices(req, res);
+    addAsn(req, res);
 });
 
+router.get('/', function (req, res) {
+    doChkAsn(req, res);
+});
 module.exports = router;
 
 
@@ -19,8 +23,58 @@ function getDate(str1) {
     return date1;
 }
 
+function doChkAsn(req, res) {
+    var doconnect = function (cb) {
+        op.doConnectCB(cb);
+    };
 
-function addInvoices(req, res) {
+    var dorelease = function (conn) {
+        conn.close();
+    };
+
+    var doSelect = function (conn, cb) {
+        asnId = req.query.asnId;
+        partGrp = req.query.partGrp;
+        let sqlStatement = `SELECT * FROM ASN_T WHERE ASN_ID='${asnId}' AND PART_GRP='${partGrp}'`;
+        let bindVars = [];
+        //  console.log(bindVars.join());
+        conn.execute(sqlStatement
+                , bindVars, {
+                    outFormat: oracledb.OBJECT
+                }, function (err, result)
+        {
+            if (err) {
+                cb(err, conn);
+            } else {
+               // console.log(sqlStatement);
+                if (result.rows.length === 0) {
+                    res.status(200).send({asnId:false});
+                    cb(null, conn);
+
+                } else {
+                    res.status(200).send({asnId:true});
+                    cb(null, conn);
+                }
+            }
+        });
+    };
+    async.waterfall(
+            [
+                doconnect,
+                doSelect
+            ],
+            function (err, conn) {
+                if (err) {
+                    console.error("In waterfall error cb: ==>", err, "<==");
+                    res.writeHead(400, {'Content-Type': 'application/json'});
+                    res.end(JSON.stringify(err));
+                }
+                if (conn)
+                    dorelease(conn);
+            });
+};
+
+function addAsn(req, res) {
     let userId = req.body.userId;
     let partGrp = req.body.partGrp;
     let locId = req.body.locId;

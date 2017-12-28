@@ -1,7 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var op = require('../../../../oracleDBOps');
-
+var oracledb = require('oracledb');
+var async = require('async');
 
 router.get('/', function (req, res) {
     getData(req, res);
@@ -18,8 +19,61 @@ router.put('/', function (req, res) {
     updateData(req, res);
 });
 
+router.get('/checkPallets', function (req, res) {
+    doChkPallets(req, res);
+});
 module.exports = router;
 
+function doChkPallets(req, res) {
+    var doconnect = function (cb) {
+        op.doConnectCB(cb);
+    };
+
+    var dorelease = function (conn) {
+        conn.close();
+    };
+
+    var doSelect = function (conn, cb) {
+        palletId = req.query.palletId;
+        partGrp = req.query.partGrp;
+        let sqlStatement = `SELECT * FROM PALLETS_T WHERE PALLET_ID='${palletId}' AND PART_GRP='${partGrp}'`;
+        let bindVars = [];
+        //  console.log(bindVars.join());
+        conn.execute(sqlStatement
+                , bindVars, {
+                    outFormat: oracledb.OBJECT
+                }, function (err, result)
+        {
+            if (err) {
+                cb(err, conn);
+            } else {
+               // console.log(sqlStatement);
+                if (result.rows.length === 0) {
+                    res.status(200).send({palletId:false});
+                    cb(null, conn);
+
+                } else {
+                    res.status(200).send({palletId:true});
+                    cb(null, conn);
+                }
+            }
+        });
+    };
+    async.waterfall(
+            [
+                doconnect,
+                doSelect
+            ],
+            function (err, conn) {
+                if (err) {
+                    console.error("In waterfall error cb: ==>", err, "<==");
+                    res.writeHead(400, {'Content-Type': 'application/json'});
+                    res.end(JSON.stringify(err));
+                }
+                if (conn)
+                    dorelease(conn);
+            });
+};
 
 function getData(req, res) {
     var palletId = (req.query.palletId || '%') + '%';

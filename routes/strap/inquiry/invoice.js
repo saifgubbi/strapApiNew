@@ -40,6 +40,8 @@ function getData(req, res) {
     var partNo = '';
     var partGrp = '';
     var invDt = '';
+    var locType ='';
+    
     //var invDtTo = '';
      
     if (req.query.invDtFrom && req.query.invDtTo) {
@@ -57,9 +59,19 @@ function getData(req, res) {
     if (req.query.partGrp) {
         partGrp = ` AND A.PART_GRP LIKE '${req.query.partGrp}%' `;
     }
-
+    
+    if (req.query.locType==='Plant') {
+        locType = ` AND A.STATUS NOT IN ('Dispatched','Reached') AND L.TYPE = 'Plant' AND A.STATUS<>L.CLOSE_STATUS AND B.part_no IS NOT NULL`;
+    }
+    if (req.query.locType==='Warehouse') {
+        locType = ` AND A.STATUS NOT IN ('Dispatched') AND L.TYPE = 'Warehouse' AND A.STATUS<>L.CLOSE_STATUS AND B.part_no IS NOT NULL`;
+    }
+    if (req.query.locType==='Transit') {
+        locType = ` AND A.STATUS IN ('Dispatched','Reached') AND L.TYPE IN ('Plant','Warehouse') AND A.STATUS<>L.CLOSE_STATUS AND B.part_no IS NOT NULL`;
+    }
+    
     //console
-    var sqlStatement =`SELECT A.INVOICE_NUM,A.INV_DT,A.FROM_LOC,A.TO_LOC,A.LR_NO,A.DEVICE_ID,B.PART_NO,A.STATUS
+    var sqlStatement =`SELECT A.INVOICE_NUM,A.INV_DT,A.FROM_LOC,A.TO_LOC,A.LR_NO,A.DEVICE_ID,B.PART_NO,A.STATUS,B.QTY
                          FROM INV_HDR_T A,
 	                      INV_LINE_T B,
 		              LOCATIONS_T L  
@@ -67,9 +79,10 @@ function getData(req, res) {
 	                  AND A.STATUS LIKE '${status}'  ${invDt}
 	                  AND A.from_loc=L.LOC_ID 
                           AND A.FROM_LOC LIKE '${fromLoc}'
-                          AND A.TO_LOC LIKE '${toLoc}' ${partGrp} ${invId} ${partNo}
+                          AND A.TO_LOC LIKE '${toLoc}' ${partGrp} ${invId} ${partNo} ${locType}
                           AND A.part_grp=B.part_grp
                           ORDER BY A.INV_DT DESC`;
+    console.log(sqlStatement);
     var bindVars = [];
     op.singleSQL(sqlStatement, bindVars, req, res);
 }

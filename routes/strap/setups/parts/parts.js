@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var op = require('../../../../oracleDBOps');
+var async = require('async');
+var oracledb = require('oracledb');
 
 router.get('/', function (req, res) {
     getData(req, res);
@@ -16,6 +18,10 @@ router.delete('/', function (req, res) {
 
 router.put('/', function (req, res) {
     updateData(req, res);
+});
+
+router.get('/checkPart', function (req, res) {
+    doChkParts(req, res);
 });
 
 module.exports = router;
@@ -60,3 +66,54 @@ function updateData(req, res) {
     //console.log(bindVars.join());
     op.singleSQL(sqlStatement, bindVars, req, res);
 }
+
+function doChkParts(req, res) {
+    var doconnect = function (cb) {
+        op.doConnectCB(cb);
+    };
+
+    var dorelease = function (conn) {
+        conn.close();
+    };
+
+    var doSelect = function (conn, cb) {
+        partNo = req.query.partNo;
+        partGrp = req.query.partGrp;
+        let sqlStatement = `SELECT * FROM PARTS_T WHERE PART_NO='${partNo}' AND PART_GRP='${partGrp}'`;
+        let bindVars = [];
+        //  console.log(bindVars.join());
+        conn.execute(sqlStatement
+                , bindVars, {
+                    outFormat: oracledb.OBJECT
+                }, function (err, result)
+        {
+            if (err) {
+                cb(err, conn);
+            } else {
+               // console.log(sqlStatement);
+                if (result.rows.length === 0) {
+                    res.status(200).send({partNo:false});
+                    cb(null, conn);
+
+                } else {
+                    res.status(200).send({partNo:true});
+                    cb(null, conn);
+                }
+            }
+        });
+    };
+    async.waterfall(
+            [
+                doconnect,
+                doSelect
+            ],
+            function (err, conn) {
+                if (err) {
+                    console.error("In waterfall error cb: ==>", err, "<==");
+                    res.writeHead(400, {'Content-Type': 'application/json'});
+                    res.end(JSON.stringify(err));
+                }
+                if (conn)
+                    dorelease(conn);
+            });
+};

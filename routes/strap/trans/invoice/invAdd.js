@@ -73,8 +73,7 @@ function doChkInv(req, res) {
                 if (conn)
                     dorelease(conn);
             });
-}
-;
+};
 
 
 function addInvoices(req, res) {

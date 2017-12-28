@@ -8,4 +8,6 @@ router.use('/parts', require('./parts'));
 router.use('/notification', require('./notification'));
 router.use('/map', require('./map'));
 router.use('/sched', require('./sched'));
+router.use('/palletize', require('./palletize'));
+router.use('/bins', require('./bins'));
 module.exports = router;

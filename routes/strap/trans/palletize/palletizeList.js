@@ -31,7 +31,7 @@ function getData(req, res) {
     }
     var sqlStatement = `SELECT E.*,P.STATUS 
                           FROM EVENTS_T E,PALLETS_T P 
-                         WHERE E.EVENT_NAME='Palletised' AND E.REF_ID LIKE '${palletId}' ${palletDt}
+                         WHERE E.EVENT_NAME IN ('Palletised','Depalletised') AND E.REF_ID LIKE '${palletId}' ${palletDt}
                            AND E.REF_LABEL LIKE '${palletLabel}' AND E.PART_GRP LIKE '${partGrp}' 
                            AND E.REF_LABEL=E.LABEL AND E.EVENT_ID=P.PALLET_ID 
                            AND E.PART_GRP=P.PART_GRP`;
@@ -55,7 +55,7 @@ function getDetail(req, res) {
     
     var sqlStatement = `SELECT E.*,B.STATUS  
                           FROM EVENTS_T E,BINS_T B 
-                         WHERE E.EVENT_NAME='Palletised' AND E.REF_ID LIKE '${palletId}' ${palDt}
+                         WHERE E.EVENT_NAME IN ('Palletised','Depalletised') AND E.REF_ID LIKE '${palletId}' ${palDt}
                            AND E.REF_LABEL LIKE '${palletLabel}' AND E.PART_GRP LIKE '${partGrp}' 
                            AND E.REF_LABEL<>E.LABEL AND E.EVENT_ID=B.BIN_ID 
                            AND E.PART_GRP=B.PART_GRP`;

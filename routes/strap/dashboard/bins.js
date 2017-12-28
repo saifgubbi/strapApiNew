@@ -220,7 +220,7 @@ function getBinHist(req, res) {
     function getEvents(conn, cb) {
         //console.log("Getting List");
 
-        let selectStatement = `SELECT * 
+        let selectStatement = `SELECT *
                                  FROM EVENTS_T A
                                 WHERE EVENT_TYPE = '${eventType}' 
                                   AND EVENT_ID='${binId}' 
@@ -251,7 +251,8 @@ function getBinHist(req, res) {
                             + ((row.PALLET_ID) ? "Pallet Id :" + row.PALLET_ID + "\n" : '')
                             + ((row.PALLET_LABEL) ? "Pallet Label :" + row.PALLET_LABEL + "\n" : '')
                             + ((row.USER_ID) ? "User :" + row.USER_ID + "\n" : '')
-                            + ((row.COMMENTS) ? "Misc :" + row.COMMENTS + "\n" : '');
+                            + ((row.COMMENTS) ? "Misc :" + row.COMMENTS + "\n" : '')
+                            + ((row.SERIAL_NUM) ? "Serial Number :" + row.SERIAL_NUM + "\n" : '');
                     resObj.DESC = desc;
                     binRes.events.push(resObj);
                 });

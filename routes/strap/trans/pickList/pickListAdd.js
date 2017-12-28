@@ -36,7 +36,8 @@ function doChkPick(req, res) {
     var doSelect = function (conn, cb) {
         //console.log(req.query.pickList);
         pickList = req.query.pickList;
-        let sqlStatement = `SELECT * FROM PICK_LIST_T WHERE PICK_LIST='${pickList}'`;
+        partGrp = req.query.partGrp;
+        let sqlStatement = `SELECT * FROM PICK_LIST_T WHERE PICK_LIST='${pickList}' AND PART_GRP='${partGrp}'`;
         let bindVars = [];
         //  console.log(bindVars.join());
         conn.execute(sqlStatement

@@ -3,6 +3,7 @@ var router = express.Router();
 var op = require('../../../../oracleDBOps');
 var async = require('async');
 var oracledb = require('oracledb');
+var moment = require('moment');
 
 router.get('/', function (req, res) {
     pickListInfo(req, res);
@@ -28,11 +29,16 @@ function pickListInfo(req, res) {
     var doSelect = function (conn, cb) {
         let partGrp = req.query.partGrp;
         var pickList = '';
-     
+        var pickDt = '';
+
+    if (req.query.pickDt) {
+        pickDt = `AND TRUNC(PICK_DATE) = '${moment(req.query.pickDt).format("DD-MMM-YYYY")}'`;
+    }
+    
     if (req.query.picklistNo) {
         pickList = `AND PICK_LIST='${req.query.picklistNo}'`;
     }
-        var sqlStatement = `SELECT * FROM PICK_LIST_T WHERE PART_GRP='${partGrp}' ${pickList}`;
+        var sqlStatement = `SELECT * FROM PICK_LIST_T WHERE PART_GRP='${partGrp}' ${pickList} ${pickDt}`;
        // console.log(sqlStatement);
         conn.execute(sqlStatement
                 , [], {
@@ -44,7 +50,7 @@ function pickListInfo(req, res) {
             } else {
                 if (result.rows.length === 0) {
                     //cb({err: 'No Active Picklist found for this Part Group'}, conn);
-                    res.status(401).send({err: 'No Active Picklist found for this Part Group'});//Added for response set
+                    res.status(200).send();//Added for response set
                     cb(null, conn);
                 } else {
                     let objArr = [];
@@ -55,6 +61,7 @@ function pickListInfo(req, res) {
                         obj.invId = row.INVOICE_NUM;
                         obj.partNo = row.PART_NO;
                         obj.qty = row.QTY||0;
+                        obj.status=row.STATUS;
                         objArr.push(obj);
                     });
                     res.writeHead(200, {'Content-Type': 'application/json'});

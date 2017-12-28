@@ -82,7 +82,7 @@ function getCloseInv(req, res) {
     var eventDate = '';
      
     if (req.query.eventDate) {
-        eventDate = `and trunc(ih.inv_dt) = '${moment(req.query.eventDate).format("DD-MMM-YYYY")}'`;
+        eventDate = `and trunc(ih.status_dt) = '${moment(req.query.eventDate).format("DD-MMM-YYYY")}'`;
     }
    
      
@@ -111,29 +111,29 @@ function getInvCount(req, res) {
    
     if (locType==='Plant')
     {
-        var sqlStatement = `SELECT count(1) count_inv , decode(ih.status,'Dispatched','Trasit','Reached','Reached','Plant') status
+        var sqlStatement = `SELECT count(1) count , ih.status 
                           FROM INV_HDR_T IH,INV_LINE_T IL,LOCATIONS_T L
                          WHERE ih.invoice_num=il.invoice_num
                            AND ih.part_grp=il.part_grp
                            AND ih.from_loc=l.loc_id
                            AND ih.status<>l.close_status
                            AND L.TYPE='${locType}'
-                           AND IH.PART_GRP='${partGrp}' ${eventDate}
-                         group by ih.status`;
+                           AND IH.PART_GRP='${partGrp}' 
+                         group by ih.status `;
     }
     else
     {
-        var sqlStatement = `SELECT sum(count_inv) count_inv,status
+        var sqlStatement = `SELECT sum(count_inv) count,status
                               FROM(
-                                   SELECT count(1) count_inv , decode(ih.status,'Dispatched','Trasit','Reached','Reached',L.TYPE) status
+                                   SELECT count(1) count_inv , ih.status 
                                      FROM INV_HDR_T IH,INV_LINE_T IL,LOCATIONS_T L
                                     WHERE ih.invoice_num=il.invoice_num
                                       AND ih.part_grp=il.part_grp
                                       AND ih.from_loc=l.loc_id
                                       AND ih.status<>l.close_status
                                       AND L.TYPE='${locType}'
-                                      AND IH.PART_GRP='${partGrp}' ${eventDate}
-                                      group by ih.status,l.type
+                                      AND IH.PART_GRP='${partGrp}' 
+                                      group by ih.status
                                     UNION
                                    SELECT count(1) count_inv , ih.status status
                                      FROM INV_HDR_T IH,INV_LINE_T IL,LOCATIONS_T L
