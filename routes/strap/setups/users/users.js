@@ -87,7 +87,7 @@ function getUserPart(req, res) {
 function addData(req, res) {
     
     var sqlStatement = "INSERT INTO USERS_T(USER_ID,PASSWORD,NAME,EMAIL,PHONE,ROLE,LOC_ID,PART_GRP) VALUES (:1,:2,:3,:4,:5,:6,:7,:8)";
-   // console.log(sqlStatement);
+    //console.log(req.body);
     hashPass(req.body.password, function (hashPassword) {
         bindVars = [req.body.userId, hashPassword, req.body.name, req.body.email, req.body.phone, req.body.role, req.body.locId, req.body.partGrp];
         op.singleSQL(sqlStatement, bindVars, req, res);
@@ -176,19 +176,15 @@ function updateData(req, res) {
                 SET NAME = :1 , EMAIL= :2, PHONE=:3,ROLE=:4,LOC_ID=:5,PART_GRP=:6
                  WHERE USER_ID=:7`;
     var bindVars = [req.body.name, req.body.email, req.body.phone, req.body.role, req.body.locId, req.body.partGrp, req.body.userId];
-        console.log(bindVars.join());
+        //console.log(bindVars.join());
         op.singleSQL(sqlStatement, bindVars, req, res);
-//    hashPass(req.body.password, function (hashPassword) {
-//        var bindVars = [req.body.name, req.body.email, req.body.phone, req.body.role, req.body.locId, req.body.partGrp, req.body.userId];
-//        console.log(bindVars.join());
-//        op.singleSQL(sqlStatement, bindVars, req, res);
-//    });
+
 
 }
 
 /*Not Used*/
 function updatePassword(req, res) {
-    console.log('inside update');
+    //console.log('inside update');
     var sqlStatement = "UPDATE USERS_T SET PASSWORD=:1 WHERE USER_ID=:2";
     hashPass(req.body.password, function (hashPassword) {
         var bindVars = [hashPassword, req.body.userId];

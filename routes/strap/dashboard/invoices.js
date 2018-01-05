@@ -48,8 +48,6 @@ function getData(req, res) {
     };
 
     function getHdr(conn, cb) {
-        //console.log("Getting Header");
-
         let selectStatement = `SELECT STATUS,
                                       COUNT(STATUS) AS COUNT 
                                  FROM INV_HDR_T A , LOCATIONS_T L 
@@ -64,9 +62,6 @@ function getData(req, res) {
                                   AND A.PART_GRP='${partGrp}'
                                   AND A.STATUS <> L.CLOSE_STATUS
                                   GROUP BY STATUS`;
-
-        //console.log(selectStatement);
-
         let bindVars = [];
 
         conn.execute(selectStatement
@@ -125,7 +120,6 @@ function getInvAll(req, res) {
     };
 
     function getHdr(conn, cb) {
-        //console.log("Getting List");
 
         let selectStatement = `SELECT * 
                                  FROM INV_HDR_T A,
@@ -142,8 +136,25 @@ function getInvAll(req, res) {
 	                          AND L.TYPE='${locType}'
                                   AND B.PART_GRP='${partGrp}'
                                   AND B.PART_GRP=A.PART_GRP
-	                          AND A.STATUS <> L.CLOSE_STATUS`;
-        //console.log(selectStatement);
+	                          AND A.STATUS <> L.CLOSE_STATUS
+                                UNION
+                                SELECT * 
+                                 FROM INV_HDR_T A,
+	                              INV_LINE_T B,
+		                      LOCATIONS_T L  
+                                WHERE A.INVOICE_NUM=B.INVOICE_NUM 
+	                          AND A.INV_DT=B.INV_DT 
+	                          AND PART_NO IN
+                                                 (SELECT PART_NO 
+				                    FROM PARTS_T 
+					           WHERE PART_GRP=${partGrp}
+                                                  ) 
+	                          AND A.from_loc=L.LOC_ID 
+	                          AND L.TYPE='${locType}'
+                                  AND B.PART_GRP=${partGrp}
+                                  AND B.PART_GRP=A.PART_GRP
+	                          AND A.STATUS = L.CLOSE_STATUS
+                                  AND A.STATUS_DT = to_date(sysdate)`;
 
         let bindVars = [];
 
@@ -196,7 +207,6 @@ function getInvList(req, res) {
     };
 
     function getHdr(conn, cb) {
-        //console.log("Getting List");
 
         let selectStatement = `SELECT * 
                                  FROM INV_HDR_T A,
@@ -214,8 +224,26 @@ function getInvList(req, res) {
 	                          AND L.TYPE='${locType}' 
                                   AND B.PART_GRP='${partGrp}'
                                   AND A.PART_GRP=B.PART_GRP
-	                          AND A.STATUS <> L.CLOSE_STATUS`;
-        //console.log(selectStatement);
+	                          AND A.STATUS <> L.CLOSE_STATUS
+                                   UNION
+                                SELECT * 
+                                 FROM INV_HDR_T A,
+	                              INV_LINE_T B,
+		                      LOCATIONS_T L  
+                                WHERE A.INVOICE_NUM=B.INVOICE_NUM 
+	                          AND A.INV_DT=B.INV_DT 
+                                  AND STATUS = '${status}' 
+	                          AND PART_NO IN
+                                                 (SELECT PART_NO 
+				                    FROM PARTS_T 
+					           WHERE PART_GRP=${partGrp}
+                                                  ) 
+	                          AND A.from_loc=L.LOC_ID 
+	                          AND L.TYPE='${locType}'
+                                  AND B.PART_GRP=${partGrp}
+                                  AND B.PART_GRP=A.PART_GRP
+	                          AND A.STATUS = L.CLOSE_STATUS
+                                  AND A.STATUS_DT = to_date(sysdate)`;
 
         let bindVars = [];
 
@@ -259,7 +287,6 @@ function getInvHist(req, res) {
 
     var partGrp = req.query.partGrp;
     var invId = req.query.invId;
-    //var invDt = moment(req.query.invDt).format("DD-MMM-YYYY");
     var role = req.query.role;
     var locType = req.query.locType;
     var invRes = {inv: {}, events: []};
@@ -273,7 +300,6 @@ function getInvHist(req, res) {
     };
 
     function getHdr(conn, cb) {
-        //console.log("Getting List");
         let selectStatement = `SELECT A.* ,B.PART_NO,B.QTY
                                  FROM INV_HDR_T A,
                                       INV_LINE_T B,
@@ -297,7 +323,6 @@ function getInvHist(req, res) {
                                   AND B.PART_GRP=U.PART_GRP
                                   AND U.ROLE='${role}'`;
 
-        //console.log(selectStatement);
 
         let bindVars = [];
 
@@ -322,7 +347,6 @@ function getInvHist(req, res) {
     }
 
     function getEvents(conn, cb) {
-        //console.log("Getting List");
 
         let selectStatement = `SELECT A.* 
                                  FROM EVENTS_T A,INV_HDR_T IH,LOCATIONS_T L
@@ -332,7 +356,6 @@ function getInvHist(req, res) {
                                   AND IH.FROM_LOC = L.LOC_ID
                                   AND L.TYPE='${locType}' 
                              ORDER BY A.EVENT_TS DESC`;
-        //console.log(selectStatement);
 
         let bindVars = [];
 
@@ -381,98 +404,6 @@ function getInvHist(req, res) {
             });
 }
 
-
-function getGeoLoc1(req, res) {
-    var request = require('request');
-    var partGrp = req.query.partGrp;
-    var invId = req.query.invId;
-    var geoRes = {inv: {}, curr: {}};
-    var locType = req.query.locType;
-
-    var doConnect = function (cb) {
-        op.doConnectCB(function (err, conn) {
-            if (err)
-                throw err;
-            cb(null, conn);
-        });
-    };
-
-    function getInvLoc(conn, cb) {
-        //console.log("Getting List");
-
-        let selectStatement = `SELECT DEVICE_ID as "deviceID",
-                                      B.LAT AS "srcLat",
-                                      B.LON AS "srcLang",
-	                              C.LAT AS "destLat",
-                                      C.LON AS "destLang"
-                                 FROM INV_HDR_T A,LOCATIONS_T B,LOCATIONS_T C 
-                                WHERE A.INVOICE_NUM = '${invId}' 
-                                  AND A.PART_GRP= '${partGrp}' 
-                                  AND B.TYPE='${locType}' 
-                                  AND A.FROM_LOC=B.LOC_ID 
-                                  AND A.TO_LOC=C.LOC_ID`;
-        //console.log(selectStatement);
-
-        let bindVars = [];
-
-        conn.execute(selectStatement
-                , bindVars, {
-                    outFormat: oracledb.OBJECT, // Return the result as Object
-                    autoCommit: true// Override the default non-autocommit behavior
-                }, function (err, result)
-        {
-            if (err) {
-                console.log("Error Occured: ", err);
-                cb(err, conn);
-            } else {
-                result.rows.forEach(function (row) {
-                    geoRes.inv = row;
-                });
-
-                cb(null, conn);
-            }
-        });
-
-    }
-
-
-    function getCurrentLoc(conn, cb) {
-        console.log(geoRes.inv.deviceID);
-        request('http://l.tigerjump.in/tjbosch/getDeviceLocation?key=15785072&deviceID=' + geoRes.inv.deviceID, function (err, response, result) {
-           // console.log(result);
-            if (err) {
-                cb(err, conn);
-            } else {
-               // console.log(result);
-                res.writeHead(200, {'Content-Type': 'application/json'});
-                try {
-                    geoRes.curr = JSON.parse(result);
-                } catch (err) {
-                    geoRes.curr = {};
-                }
-                res.end(JSON.stringify(geoRes));
-                cb(null, conn);
-            }
-        });
-    }
-
-    async.waterfall(
-            [doConnect,
-                getInvLoc,
-                getCurrentLoc
-            ],
-            function (err, conn) {
-                if (err) {
-                    console.error("In waterfall error cb: ==>", err, "<==");
-                    res.status(500).json({message: err});
-                }
-                console.log("Done Waterfall");
-                if (conn)
-                    conn.close();
-            });
-
-}
-
 function getGeoLoc(req, res) {
     var request = require('request');
     var partGrp = req.query.partGrp;
@@ -503,7 +434,6 @@ function getGeoLoc(req, res) {
                                   AND B.TYPE='${locType}'
                                   AND A.FROM_LOC=B.LOC_ID 
                                   AND A.TO_LOC=C.LOC_ID`;
-        //console.log(selectStatement);
 
         let bindVars = [];
 
@@ -531,11 +461,9 @@ function getGeoLoc(req, res) {
     function getCurrentLoc(conn, cb) {
         console.log(geoRes.inv.deviceID);
         request('http://l.tigerjump.in/tjbosch/getDeviceLocation?key=15785072&deviceID=' + geoRes.inv.deviceID, function (err, response, result) {
-           // console.log(result);
             if (err) {
                 cb(err, conn);
             } else {
-                // console.log(result);
                 res.writeHead(200, {'Content-Type': 'application/json'});
                 try {
                     geoRes.dev = JSON.parse(result);
@@ -549,7 +477,6 @@ function getGeoLoc(req, res) {
     }
 
     function getCurrentLoc1(conn, cb) {
-       //console.log(geoRes.dev.data);
        if (geoRes.dev.data)
        {
            console.log('inside if');
@@ -558,7 +485,6 @@ function getGeoLoc(req, res) {
                 '&destinations=' + geoRes.inv.destLat + ',' + geoRes.inv.destLang +
                 '\&key=AIzaSyA3P7PPCNhDvpgBwcmaLVZxPlnqoCVSd7M', function (err, response, result) {
 
-                   // console.log(result);
                     if (err) {
                         cb(err, conn);
                     } else {
@@ -580,7 +506,6 @@ function getGeoLoc(req, res) {
             geoRes.cur = {};
            res.end(JSON.stringify(geoRes));
            cb(null, conn);
-         //   console.log('inside else');
  
     }
     }
@@ -621,7 +546,6 @@ function getInvCur(req, res) {
     };
 
     function getHdr(conn, cb) {
-       // console.log("Getting List");
 
         let selectStatement = `SELECT EVENT_ID,CREATION_DT,EVENT_NAME,CURR_LOC,FROM_LOC,TO_LOC,PERCENTAGE, EXPECTED_DT
                                FROM(
@@ -654,7 +578,6 @@ function getInvCur(req, res) {
                                     order by EVENT_TS DESC
                                     )
                                 WHERE ROWNUM=1`;
-        //console.log(selectStatement);
 
         let bindVars = [];
 

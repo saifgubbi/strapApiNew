@@ -27,7 +27,7 @@ function getData(req, res) {
     var role = req.query.role;
     var locId = req.query.locId;
     var bins = {binsSeries: [], binsGroups: [], binLocCount: []};
-    
+
 
 
     var doConnect = function (cb) {
@@ -58,8 +58,6 @@ function getData(req, res) {
                                   AND A.PART_GRP='${partGrp}'
                                   AND U.PART_GRP =A.PART_GRP
                                 GROUP BY B.DESCRIPTION,A.STATUS,A.FROM_LOC`;
-  
-        //console.log(selectStatement);
 
         let bindVars = [];
 
@@ -85,7 +83,6 @@ function getData(req, res) {
 
                 let binResult = [];
                 result.rows.forEach(function (row) {
-                    //console.log(row);
                     let rowAdded = false;
                     binResult.forEach(function (bin) {
                         if (bin.STATUS === row.STATUS && bin.FROM_LOC === row.FROM_LOC) {
@@ -130,7 +127,7 @@ function getBinsDet(req, res) {
     var status = req.query.status;
     var option = req.query.option;
     var partGrp = req.query.partGrp;
-    
+
     var sqlStatement;
     if (status === 'Free') {
         sqlStatement = `SELECT STATUS,
@@ -151,7 +148,6 @@ function getBinsDet(req, res) {
                            AND PART_GRP='${partGrp}'
                       GROUP BY status,FROM_LOC`;
     }
-   // console.log(sqlStatement);
 
     var bindVars = [];
     op.singleSQL(sqlStatement, bindVars, req, res);
@@ -187,13 +183,11 @@ function getBinHist(req, res) {
     };
 
     function getHdr(conn, cb) {
-        //console.log("Getting List");
 
         let selectStatement = `SELECT * 
                                  FROM ${option} 
                                 WHERE ${optionID} = '${binId}'
                                   AND part_grp='${partGrp}' `;
-       // console.log(selectStatement);
 
         let bindVars = [];
 
@@ -218,7 +212,6 @@ function getBinHist(req, res) {
     }
 
     function getEvents(conn, cb) {
-        //console.log("Getting List");
 
         let selectStatement = `SELECT *
                                  FROM EVENTS_T A
@@ -226,7 +219,6 @@ function getBinHist(req, res) {
                                   AND EVENT_ID='${binId}' 
                                   AND part_grp='${partGrp}'
                              ORDER BY EVENT_TS DESC`;
-        //console.log(selectStatement);
 
         let bindVars = [];
 

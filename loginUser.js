@@ -51,7 +51,7 @@ function loginUser(req, res) {
     };
 
     function doSelectUser(conn, cb) {
-        console.log(req.body.userId);
+        console.log(req.body);
         let sqlStatement = `SELECT * FROM USERS_T WHERE USER_ID='${userId}'`;
         let bindVars = [];
         //  console.log(bindVars.join());

@@ -31,7 +31,7 @@ function getData(req, res) {
     }
     var sqlStatement = `SELECT E.*,P.STATUS 
                           FROM EVENTS_T E,PALLETS_T P 
-                         WHERE E.EVENT_NAME IN ('Palletised','Depalletised') AND E.REF_ID LIKE '${palletId}' ${palletDt}
+                         WHERE E.EVENT_NAME IN ('Palletised','Depalletise') AND E.REF_ID LIKE '${palletId}' ${palletDt}
                            AND E.REF_LABEL LIKE '${palletLabel}' AND E.PART_GRP LIKE '${partGrp}' 
                            AND E.REF_LABEL=E.LABEL AND E.EVENT_ID=P.PALLET_ID 
                            AND E.PART_GRP=P.PART_GRP`;
@@ -48,17 +48,18 @@ function getDetail(req, res) {
     var palletId = (req.query.id || '%') + '%';
     var partGrp = (req.query.partGrp || '%') + '%';
     var palDt = '';
-     
+    var eventTs =req.query.eventTs; 
     if (req.query.palDt) {
         palDt = `AND to_date(E.EVENT_DATE) = '${moment(req.query.date).format("DD-MMM-YYYY")}'`;
     }
     
     var sqlStatement = `SELECT E.*,B.STATUS  
                           FROM EVENTS_T E,BINS_T B 
-                         WHERE E.EVENT_NAME IN ('Palletised','Depalletised') AND E.REF_ID LIKE '${palletId}' ${palDt}
+                         WHERE E.EVENT_NAME IN ('Palletised','Depalletise') AND E.REF_ID LIKE '${palletId}' ${palDt}
                            AND E.REF_LABEL LIKE '${palletLabel}' AND E.PART_GRP LIKE '${partGrp}' 
                            AND E.REF_LABEL<>E.LABEL AND E.EVENT_ID=B.BIN_ID 
-                           AND E.PART_GRP=B.PART_GRP`;
+                           AND E.PART_GRP=B.PART_GRP
+                           AND round(E.event_ts/2000)=round('${eventTs}'/2000)`;
     var bindVars = [];
     op.singleSQL(sqlStatement, bindVars, req, res);
 }
@@ -77,14 +78,20 @@ function depalletize(req, res) {
     let ts = new Date().getTime();
 
     let bindArr = [];
-
+    let bindVars=[];
     let sqlStatement = "INSERT INTO EVENTS_T VALUES (:1,:2,:3,:4,:5,:6,:7,:8,:9,:10,:11,:12,:13,:14,:15,:16,:17,:18,:19,:20) ";
-    let bindVars = [palletId, palletType, 'Depalletise', new Date(), locId, '', palletLbl, palletPart, palletQty, null, userId, comments, 0, ts, palletId, palletLbl, partGrp, null, null, null];
-
+    if (palletId===palletLbl)
+    {    
+    bindVars = [palletId, palletType, 'Depalletise', new Date(), locId, '', palletLbl, palletPart, palletQty, null, userId, 'N', 0, ts, palletId, palletLbl, partGrp, null, null, null];
+    }
+    else
+    {
+    bindVars = [palletId, palletType, 'Depalletise', new Date(), locId, '', palletLbl, palletPart, palletQty, null, userId, comments, 0, ts, palletId, palletLbl, partGrp, null, null, null];    
+    }
     bindArr.push(bindVars);
 
     req.body.binArray.forEach(function (obj) {
-        let binVars = [obj.EVENT_ID, 'Bin', 'Depalletise', new Date(), locId, '', obj.LABEL, obj.PART_NO, obj.QTY, null, userId, null, 0, ts, palletId, palletLbl, partGrp, null, null];
+        binVars = [obj.EVENT_ID, 'Bin', 'Depalletise', new Date(), locId, '', obj.LABEL, obj.PART_NO, obj.QTY, null, userId, null, 0, ts, palletId, palletLbl, partGrp, null, null,null];
         bindArr.push(binVars);
     });
     insertEvents(req, res, sqlStatement, bindArr);

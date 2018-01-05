@@ -61,14 +61,16 @@ function getData(req, res) {
     }
     
     if (req.query.locType==='Plant') {
-        locType = ` AND A.STATUS NOT IN ('Dispatched','Reached') AND L.TYPE = 'Plant' AND A.STATUS<>L.CLOSE_STATUS AND B.part_no IS NOT NULL`;
+      //  locType = ` AND A.STATUS NOT IN ('Dispatched','Reached') AND L.TYPE = 'Plant' AND A.STATUS<>L.CLOSE_STATUS AND B.part_no IS NOT NULL`;
+        locType = ` AND L.TYPE = 'Plant' AND A.STATUS<>L.CLOSE_STATUS AND B.part_no IS NOT NULL`;
     }
     if (req.query.locType==='Warehouse') {
-        locType = ` AND A.STATUS NOT IN ('Dispatched') AND L.TYPE = 'Warehouse' AND A.STATUS<>L.CLOSE_STATUS AND B.part_no IS NOT NULL`;
+        //locType = ` AND A.STATUS NOT IN ('Dispatched') AND L.TYPE = 'Warehouse' AND A.STATUS<>L.CLOSE_STATUS AND B.part_no IS NOT NULL`;
+        locType = `AND L.TYPE = 'Warehouse' AND A.STATUS<>L.CLOSE_STATUS AND B.part_no IS NOT NULL`;
     }
-    if (req.query.locType==='Transit') {
-        locType = ` AND A.STATUS IN ('Dispatched','Reached') AND L.TYPE IN ('Plant','Warehouse') AND A.STATUS<>L.CLOSE_STATUS AND B.part_no IS NOT NULL`;
-    }
+//    if (req.query.locType==='Transit') {
+//        locType = ` AND A.STATUS IN ('Dispatched','Reached') AND L.TYPE IN ('Plant','Warehouse') AND A.STATUS<>L.CLOSE_STATUS AND B.part_no IS NOT NULL`;
+//    }
     
     //console
     var sqlStatement =`SELECT A.INVOICE_NUM,A.INV_DT,A.FROM_LOC,A.TO_LOC,A.LR_NO,A.DEVICE_ID,B.PART_NO,A.STATUS,B.QTY

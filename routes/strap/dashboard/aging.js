@@ -94,8 +94,6 @@ function getChart(req, res) {
                 });
 
                 parts.partsGroups = [1, 2, 3, 4, 5, 6, 7, 8, 9, '>9'];
-                // console.log(parts);
-
                 res.writeHead(200, {'Content-Type': 'application/json'});
                 res.end(JSON.stringify(parts));
 

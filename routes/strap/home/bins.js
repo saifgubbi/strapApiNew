@@ -28,7 +28,7 @@ function getData(req, res) {
     function getHdr(conn, cb) {
         //console.log("Getting Header");
 
-        let selectStatement = `  SELECT TYPE as "loc",SUM(free) as "free",Sum(inuse) as "inUse"
+        let selectStatement = `   SELECT TYPE as "loc",SUM(free) as "free",Sum(inuse) as "inUse"
                                    FROM(
                                        SELECT TYPE ,DECODE(status,'Free',sum(bins),0) as free,DECODE(status,'In Use',sum(bins),0) as inUse
                                          FROM(
@@ -40,22 +40,8 @@ function getData(req, res) {
                                          WHERE A.FROM_LOC=B.LOC_ID                                           
                                            AND A.PART_GRP='${partGrp}'
                                       GROUP BY B.TYPE,A.STATUS,A.QTY
-                                      ) GROUP BY STATUS,TYPE) group by type `;
-        
-//                let selectStatement = `  SELECT STATUS,TYPE,SUM(COUNT) as COUNT
-//                                  FROM(
-//                                        SELECT DECODE(A.QTY,0,'Free','In Use') STATUS,
-//                                               B.TYPE,
-//                                               A.QTY,
-//                                               COUNT(*) AS COUNT 
-//                                          FROM BINS_T A ,
-//                                               LOCATIONS_T B
-//                                         WHERE A.FROM_LOC=B.LOC_ID                                           
-//                                           AND A.PART_GRP='${partGrp}'
-//                                      GROUP BY B.TYPE,A.STATUS,A.QTY
-//                                      ) GROUP BY STATUS,TYPE`;
-  
-        //console.log(selectStatement);
+                                      ) GROUP BY STATUS,TYPE UNION SELECT 'Customer' as TYPE,0 as free,0 as "inUse" from dual)group by type`;
+
 
         let bindVars = [];
 
@@ -72,37 +58,6 @@ function getData(req, res) {
                 
                 
                 var binResult = result.rows;
-                 
-                //let binResult={loc:0,inUse:0,free:0};
-//                 result.rows.forEach(function (row) {
-//                    console.log(row);
-//                    if (row.TYPE='Plant')
-//                    {
-//                        binResult.loc=row.TYPE;
-//                        if (row.STATUS)
-//                    }
-                     // let binResult={plant:{inUse:0,free:0},warehouse:{inUse:0,free:0},customer:{inUse:0,free:0}}
-                     
-                     // binResult
-//                        if (row.TYPE==='Plant' && row.STATUS==='In Use') {
-//                            binResult.plant.inUse=row.COUNT;                             
-//                        }
-//                        else if (row.TYPE==='Plant' && row.STATUS==='Free') {
-//                            binResult.plant.free=row.COUNT; 
-//                        }
-//                        else if (row.TYPE==='Warehouse' && row.STATUS==='In Use') {
-//                            binResult.warehouse.inUse=row.COUNT; 
-//                        }
-//                        else if (row.TYPE==='Warehouse' && row.STATUS==='Free') {
-//                            binResult.warehouse.inUse=row.COUNT; 
-//                        }
-//                        else if (row.TYPE==='Customer' && row.STATUS==='In Use') {
-//                            binResult.plant.inUse=row.COUNT; 
-//                        }
-//                        else if (row.TYPE==='Customer' && row.STATUS==='In Use') {
-//                            binResult.plant.inUse=row.COUNT; 
-                        //}
-//                    });
                     console.log(binResult);
                 res.writeHead(200, {'Content-Type': 'application/json'});
                 res.end(JSON.stringify(binResult));

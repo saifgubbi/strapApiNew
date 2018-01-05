@@ -1,4 +1,4 @@
-var express = require('express');
+    var express = require('express');
 var router = express.Router();
 var op = require('../../../../oracleDBOps');
 var async = require('async');
@@ -161,7 +161,7 @@ function  getInvList(req, res) {
     if (req.query.lr) {
         lr = ` AND LR LIKE '${req.query.lr}%' `;
     }
-    var sqlStatement = `SELECT * FROM INV_HDR_T A,INV_LINE_T B  WHERE A.INVOICE_NUM LIKE '${invId}' AND A.FROM_LOC LIKE '${fromLoc}' AND A.TO_LOC LIKE '${toLoc}' AND A.STATUS LIKE '${status}' AND                         
+    var sqlStatement = `SELECT * FROM INV_HDR_T A,INV_LINE_T B  WHERE A.INVOICE_NUM LIKE '${invId}' AND A.FROM_LOC LIKE '${fromLoc}' AND A.TO_LOC LIKE '${toLoc}' AND A.STATUS IN ('Parts Assigned','LR Assigned') AND                         
                         A.INVOICE_NUM=B.INVOICE_NUM AND A.INV_DT=B.INV_DT AND B.PART_NO LIKE '${partNo}' AND A.PART_GRP = '${partGrp}'  ${lr} ${invDt}`;
     var bindVars = [];
     //console.log(sqlStatement);
@@ -196,7 +196,7 @@ function getDeviceStatus(req, res) {
                         let devTime = apiResp.data.lastGpsTimeInMs * 1000;
                         let diffTime = ts - devTime;
                         let vArr = {};
-                        if (diffTime <= 180000)
+                        if (diffTime <= 360000)
                         {
                             vArr.status = 'Active';
                             vArr.lastGpsTimeInMs = apiResp.data.lastGpsTimeInMs * 1000;

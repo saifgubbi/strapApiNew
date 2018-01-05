@@ -78,6 +78,7 @@ function getData(req, res) {
                          FROM SERIAL_T A
                         WHERE 1=1 ${serDt} ${serNum} ${partNo} ${partGrp} ${batch} ${status}
                         ORDER BY SERIAL_DT DESC,SERIAL_NUM`;
+    console.log(sqlStatement);
     var bindVars = [];
     op.singleSQL(sqlStatement, bindVars, req, res);
 }
