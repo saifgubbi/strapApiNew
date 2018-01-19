@@ -54,16 +54,17 @@ function getData(req, res) {
                                 WHERE (INVOICE_NUM,INV_DT) IN (SELECT INVOICE_NUM,INV_DT 
                                                                  FROM INV_LINE_T B,PARTS_T C 
                                                                 WHERE B.PART_NO=C.PART_NO 
-                                                                  AND C.PART_GRP='${partGrp}'
                                                                   AND B.PART_GRP =C.PART_GRP
+                                                                  AND B.PART_GRP='${partGrp}' 
+        
                                                                ) 
                                   AND A.from_loc=L.LOC_ID 
                                   AND L.TYPE='${locType}' 
-                                  AND A.PART_GRP='${partGrp}'
+                                  AND A.PART_GRP='${partGrp}' 
                                   AND A.STATUS <> L.CLOSE_STATUS
                                   GROUP BY STATUS`;
         let bindVars = [];
-
+           console.log(selectStatement);
         conn.execute(selectStatement
                 , bindVars, {
                     outFormat: oracledb.OBJECT, // Return the result as Object
@@ -147,11 +148,11 @@ function getInvAll(req, res) {
 	                          AND PART_NO IN
                                                  (SELECT PART_NO 
 				                    FROM PARTS_T 
-					           WHERE PART_GRP=${partGrp}
+					           WHERE PART_GRP='${partGrp}'
                                                   ) 
 	                          AND A.from_loc=L.LOC_ID 
 	                          AND L.TYPE='${locType}'
-                                  AND B.PART_GRP=${partGrp}
+                                  AND B.PART_GRP='${partGrp}'
                                   AND B.PART_GRP=A.PART_GRP
 	                          AND A.STATUS = L.CLOSE_STATUS
                                   AND A.STATUS_DT = to_date(sysdate)`;
@@ -236,11 +237,11 @@ function getInvList(req, res) {
 	                          AND PART_NO IN
                                                  (SELECT PART_NO 
 				                    FROM PARTS_T 
-					           WHERE PART_GRP=${partGrp}
+					           WHERE PART_GRP='${partGrp}'
                                                   ) 
 	                          AND A.from_loc=L.LOC_ID 
 	                          AND L.TYPE='${locType}'
-                                  AND B.PART_GRP=${partGrp}
+                                  AND B.PART_GRP='${partGrp}'
                                   AND B.PART_GRP=A.PART_GRP
 	                          AND A.STATUS = L.CLOSE_STATUS
                                   AND A.STATUS_DT = to_date(sysdate)`;

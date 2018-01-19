@@ -82,7 +82,7 @@ function getPendingReceive(req, res) {
       console.log('Inside Return')
     var sqlStatement = `SELECT LETTER_HEAD FROM RETURN_LH_T WHERE STATUS='Returned' AND PART_GRP = '${partGrp}'`;
     var bindVars = [];
-
+     console.log(sqlStatement);
     op.singleSQL(sqlStatement, bindVars, req, res);
 }
 
@@ -94,7 +94,7 @@ function getReturnObjects(req, res) {
     var sqlStatement = `(SELECT A.BIN_ID AS OBJ_ID, A.LABEL AS OBJ_LBL,A.QTY,A.PART_NO,'Bin' as OBJ_TYPE,B.LETTER_HEAD FROM BINS_T A,RETURN_LH_T B WHERE A.INVOICE_NUM=B.LETTER_HEAD AND A.PART_GRP=B.PART_GRP AND B.LETTER_HEAD='${refId}' AND B.PART_GRP = '${partGrp}' AND PALLET_ID is NULL) UNION (SELECT A.PALLET_ID AS OBJ_ID,A.LABEL AS OBJ_LBL,A.QTY,A.PART_NO,'Pallet' as OBJ_TYPE,B.LETTER_HEAD FROM PALLETS_LBL_T A,RETURN_LH_T B WHERE A.INVOICE_NUM=B.LETTER_HEAD AND A.PART_GRP=B.PART_GRP AND B.LETTER_HEAD='${refId}' AND B.PART_GRP = '${partGrp}')`;
     var bindVars = [];
     
-    //console.log(sqlStatement);
+    console.log(sqlStatement);
 
     op.singleSQL(sqlStatement, bindVars, req, res);
 }
@@ -109,6 +109,7 @@ function returnObj(req, res) {
     let refId=req.body.refId;
     let qty=req.body.qty;
     let comments=req.body.comments;
+   // let refLabel=req.body.isUntracked;
 
 
     let ts = new Date().getTime();
@@ -122,7 +123,7 @@ function returnObj(req, res) {
 
     /*Insert Object (bin,pallets as dispatched)*/
     req.body.objArray.forEach(function (obj) {
-            let objVars = [obj.objId, obj.type, 'Returned', new Date(), locId, '1760', null, null, 0, refId, userId, comments, 0, ts, null, null, partGrp, lr, null, null];
+            let objVars = [obj.objId, obj.type, 'Returned', new Date(), locId, '1760', null, null, 0, null, userId, comments, 0, ts, refId, null, partGrp, lr, null, null];
 //        if (invArr.indexOf(obj.invId) < 0) {
 //            invArr.push(obj.invId);
 //        }
@@ -132,7 +133,7 @@ function returnObj(req, res) {
     /*Insert Unique Invoices with Dispatched Status*/
    // invArr.forEach(function (refId) {
        // let binVars = [invID, 'Invoice', 'Dispatched', new Date(), locId, null, '', '', 0, invID, userId, null, 0, ts, null, null, partGrp, lr, null, null];
-        let binVars = [refId, 'Return LH', 'Returned', new Date(), locId, '1760', '', '', qty, refId, userId, comments, 0, ts, null, null, partGrp, lr, null, null];
+        let binVars = [refId, 'Return LH', 'Returned', new Date(), locId, '1760', '', '', qty, null, userId, comments, 0, ts, refId, null, partGrp, lr, null, null];
         bindArr.push(binVars);
     //});
 
@@ -150,7 +151,7 @@ function receiveObj(req, res) {
     let refId=req.body.refId;
     let qty=req.body.qty;
     let comments=req.body.comments;
-
+    let refLabel=req.body.isUntracked;
 
     let ts = new Date().getTime();
         let invArr = [];
@@ -162,11 +163,11 @@ function receiveObj(req, res) {
     let sqlStatement = "INSERT INTO EVENTS_T VALUES (:1,:2,:3,:4,:5,:6,:7,:8,:9,:10,:11,:12,:13,:14,:15,:16,:17,:18,:19,:20) ";
 
     req.body.objArray.forEach(function (obj) {
-            let objVars = [obj.objId, obj.type, 'Ret Received', new Date(), locId, '1760', null, null, 0, refId, userId, comments, 0, ts, null, null, partGrp, lr, null, null];
+            let objVars = [obj.objId, obj.type, 'Ret Received', new Date(), locId, '1760', null, null, 0, null, userId, comments, 0, ts, refId, null, partGrp, lr, null, null];
         bindArr.push(objVars);
     });
 
-     let binVars = [refId, 'Return LH', 'Ret Received', new Date(), locId, '1760', '', '', qty, refId, userId, comments, 0, ts, null, null, partGrp, lr, null, null];
+     let binVars = [refId, 'Return LH', 'Ret Received', new Date(), locId, '1760', '', '', qty, null, userId, comments, 0, ts, refId, refLabel, partGrp, lr, null, null];
         bindArr.push(binVars);
    
 

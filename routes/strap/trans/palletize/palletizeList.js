@@ -59,7 +59,8 @@ function getDetail(req, res) {
                            AND E.REF_LABEL LIKE '${palletLabel}' AND E.PART_GRP LIKE '${partGrp}' 
                            AND E.REF_LABEL<>E.LABEL AND E.EVENT_ID=B.BIN_ID 
                            AND E.PART_GRP=B.PART_GRP
-                           AND round(E.event_ts/2000)=round('${eventTs}'/2000)`;
+                           AND round(E.event_ts/2000)=round(${parseInt(eventTs)}/2000)`;
+    console.log(sqlStatement)    
     var bindVars = [];
     op.singleSQL(sqlStatement, bindVars, req, res);
 }
@@ -76,7 +77,7 @@ function depalletize(req, res) {
     let partGrp = req.body.PART_GRP;
     let comments = '';//req.body.isReturnable;
     let ts = new Date().getTime();
-
+     console.log('inside depalletise');
     let bindArr = [];
     let bindVars=[];
     let sqlStatement = "INSERT INTO EVENTS_T VALUES (:1,:2,:3,:4,:5,:6,:7,:8,:9,:10,:11,:12,:13,:14,:15,:16,:17,:18,:19,:20) ";
@@ -88,6 +89,8 @@ function depalletize(req, res) {
     {
     bindVars = [palletId, palletType, 'Depalletise', new Date(), locId, '', palletLbl, palletPart, palletQty, null, userId, comments, 0, ts, palletId, palletLbl, partGrp, null, null, null];    
     }
+    console.log(bindVars);
+    console.log(sqlStatement);
     bindArr.push(bindVars);
 
     req.body.binArray.forEach(function (obj) {

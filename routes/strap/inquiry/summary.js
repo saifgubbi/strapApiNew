@@ -71,7 +71,7 @@ function getOpenInv(req, res) {
                            AND L.TYPE='${locType}'
                            AND IH.PART_GRP='${partGrp}' `;
     var bindVars = [];
-    console.log(sqlStatement);
+    //console.log(sqlStatement);
     op.singleSQL(sqlStatement, bindVars, req, res);
 }
 
@@ -95,7 +95,7 @@ function getCloseInv(req, res) {
                            AND L.TYPE='${locType}'
                            AND IH.PART_GRP='${partGrp}' ${eventDate}`;
     var bindVars = [];
-    console.log(sqlStatement);
+    //console.log(sqlStatement);
     op.singleSQL(sqlStatement, bindVars, req, res);
 }
 
@@ -105,21 +105,36 @@ function getInvCount(req, res) {
     var locType = req.query.locType;
     var eventDate = '';
      
+    
+    
     if (req.query.eventDate) {
-        eventDate = `and trunc(ih.inv_dt) = '${moment(req.query.eventDate).format("DD-MMM-YYYY")}'`;
+        eventDate = `and trunc(ih.status_dt) = '${moment(req.query.eventDate).format("DD-MMM-YYYY")}'`;
     }
    
     if (locType==='Plant')
     {
-        var sqlStatement = `SELECT count(1) count , ih.status 
-                          FROM INV_HDR_T IH,INV_LINE_T IL,LOCATIONS_T L
-                         WHERE ih.invoice_num=il.invoice_num
-                           AND ih.part_grp=il.part_grp
-                           AND ih.from_loc=l.loc_id
-                           AND ih.status<>l.close_status
-                           AND L.TYPE='${locType}'
-                           AND IH.PART_GRP='${partGrp}' 
-                         group by ih.status `;
+        var sqlStatement = `SELECT sum(count_inv) count,status
+                              FROM
+                                (SELECT count(1) count_inv , ih.status 
+                                   FROM INV_HDR_T IH,INV_LINE_T IL,LOCATIONS_T L
+                                  WHERE ih.invoice_num=il.invoice_num
+                                    AND ih.part_grp=il.part_grp
+                                    AND ih.from_loc=l.loc_id
+                                    AND ih.status<>l.close_status
+                                    AND L.TYPE='${locType}'
+                                    AND IH.PART_GRP='${partGrp}' 
+                               group by ih.status
+                                UNION 
+                                 SELECT count(1) count_inv , ih.status 
+                                   FROM INV_HDR_T IH,INV_LINE_T IL,LOCATIONS_T L
+                                  WHERE ih.invoice_num=il.invoice_num
+                                    AND ih.part_grp=il.part_grp
+                                    AND ih.from_loc=l.loc_id
+                                    AND ih.status=l.close_status
+                                    AND L.TYPE='${locType}'  ${eventDate}
+                                    AND IH.PART_GRP='${partGrp}' 
+                               group by ih.status ) 
+                             GROUP BY status`;
     }
     else
     {
@@ -135,20 +150,20 @@ function getInvCount(req, res) {
                                       AND IH.PART_GRP='${partGrp}' 
                                       group by ih.status
                                     UNION
-                                   SELECT count(1) count_inv , ih.status status
+                                    SELECT count(1) count_inv , ih.status 
                                      FROM INV_HDR_T IH,INV_LINE_T IL,LOCATIONS_T L
                                     WHERE ih.invoice_num=il.invoice_num
                                       AND ih.part_grp=il.part_grp
-                                      AND ih.to_loc=l.loc_id
-                                      AND ih.status='Received'
-                                      AND L.TYPE='${locType}'
-                                      AND IH.PART_GRP='${partGrp}' ${eventDate}
-                                      group by ih.status 
+                                      AND ih.from_loc=l.loc_id
+                                      AND ih.status=l.close_status
+                                      AND L.TYPE='${locType}' ${eventDate}
+                                      AND IH.PART_GRP='${partGrp}' 
+                                      group by ih.status                                   
                                     )
                                     GROUP BY status`;
     }
     var bindVars = [];
-    console.log(sqlStatement)
+    //console.log(sqlStatement)
     op.singleSQL(sqlStatement, bindVars, req, res);
 }
 
@@ -164,6 +179,6 @@ function getPickList(req, res) {
     
     var sqlStatement = `select p.pick_list,p.part_no,p.Qty from pick_list_t p where PART_GRP= '${partGrp}' ${eventDate} `;
     var bindVars = [];
-    console.log(sqlStatement);
+   // console.log(sqlStatement);
     op.singleSQL(sqlStatement, bindVars, req, res);
 }
